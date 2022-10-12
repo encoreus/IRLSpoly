@@ -1,0 +1,29 @@
+---
+title: "IRLSpoly Testing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(IRLSpoly)
+
+X = gen_rho(100,0.5)
+
+X = gen_polyseries(1000,0.5,-1:1)
+result = esti_polyserial(X)
+result
+
+X = gen_polychoric(1000,0.5,0:1,-1:0)
+result = esti_polychoric(X)
+print(c(result$rho,result$std,result$iter))
+```
