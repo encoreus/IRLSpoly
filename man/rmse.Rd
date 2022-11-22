@@ -20,7 +20,7 @@ Calculate the RMSE of an array of estimates relative to the true value.
 \examples{
 rho = 0.5
 rhohat = 0.5 + rnorm(10)
-rmse(rohat,rho)
+rmse(rhohat,rho)
 }
 \seealso{
 \link{mb}

@@ -15,7 +15,7 @@
 #' @examples
 #' rho = 0.5
 #' rhohat = 0.5 + rnorm(10)
-#' mrb(rohat,rho)
+#' mrb(rhohat,rho)
 mrb = function(rhohat,rho){
   return(mean((rhohat-rho)/rho))
 }

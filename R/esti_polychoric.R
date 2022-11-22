@@ -43,9 +43,13 @@ esti_polychoric <- function(X,maxn=100,e=1e-8,ct = FALSE){
   Pl = matrix(P,1,s*r)
   B = t(Pl)%*%Pl
   B = diag(Pl[1,])-B
-  B = B/length(x)
+  B = B/N
 
-  rho0 = cor(x,y)
+  if(ct){
+    rho0 = 0
+  }else{
+    rho0 = cor(x,y)
+  }
   ex = (dnorm(a[1:s])-dnorm(a[2:(s+1)]))/Pa
   Pw1 = t(t(P)/Pa)
   Pw2 = P/Pb
@@ -99,7 +103,7 @@ esti_polychoric <- function(X,maxn=100,e=1e-8,ct = FALSE){
   varrho = solve(t(ex)%*%solve(Sigma)%*%ex)
 
   return(list(rho=rho,
-              std = sqrt(varrho),
+              std = sqrt(varrho[1,1]),
               iter = iter,
               Ex = Ex,
               Ey = Ey))

@@ -15,7 +15,7 @@
 #' @examples
 #' rho = 0.5
 #' rhohat = 0.5 + rnorm(10)
-#' rmse(rohat,rho)
+#' rmse(rhohat,rho)
 rmse = function(rhohat,rho){
   return(sqrt(mean((rhohat-rho)^2)))
 }

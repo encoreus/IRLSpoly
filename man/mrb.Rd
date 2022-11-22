@@ -20,7 +20,7 @@ Calculate the MRB of an array of estimates relative to the true value.
 \examples{
 rho = 0.5
 rhohat = 0.5 + rnorm(10)
-mrb(rohat,rho)
+mrb(rhohat,rho)
 }
 \seealso{
 \link{mb}

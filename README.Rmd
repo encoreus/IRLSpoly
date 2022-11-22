@@ -1,0 +1,181 @@
+---
+output: github_document
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# IRLSpoly
+
+The traditional algorithms for estimating the polyserial/polychoric correlation coefficients are designed based on the maximum likelihood method. Although they are accurate, they are very slow due to the numerical calculation of double integral in iteration.
+
+IRLS provides an iterative regression algorithm based on conditional mathematical expectation, which can calculate the polyserial/polychoric correlation coefficient extremely quickly with similar accuracy.
+
+The paper explaining the theory is placed in \url{https://arxiv.org/abs/2210.11115}.
+
+
+## Installation
+
+You can install the development version of IRLSpoly from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("encoreus/IRLSpoly")
+```
+
+```{r}
+options (warn = -1)
+library(IRLSpoly)
+library(psych)
+```
+
+## Simmulation
+
+You can use gen_polyserial and gen_polychoric to generate simulated polyserial/polychoric sequences:
+```{r}
+set.seed(1997)
+X1 = gen_polyseries(500,0.5,-1:1)
+X2 = gen_polychoric(500,0.5,-1:0,0:1)
+X1[,1:6]
+X2[,1:6]
+table(X2[1,],X2[2,])
+```
+
+You can use esti_polyserial and esti_polychoric to estimate polyserial/polychoric coefficients:
+```{r}
+result1 = esti_polyserial(X1)
+result2 = esti_polychoric(X2)
+
+print("The rhohat of polyserial coefficient is:")
+print(result1$rho)
+print("The standard error of polyserial coefficient is:")
+print(result1$std)
+
+print("The rhohat of polyserial coefficient is:")
+print(result2$rho)
+print("The standard error of polyserial coefficient is:")
+print(result2$std)
+```
+
+Compare with the MLE in package: polycor:
+```{r}
+MLE1 = polycor::polyserial(X1[1,],X1[2,],ML=T,std.err=T)
+MLE2 = polycor::polychor(X2[1,],X2[2,],ML=T,std.err=T)
+
+print("The rhohat of polyserial coefficient is:")
+print(MLE1$rho)
+print("The standard error of polyserial coefficient is:")
+print(sqrt(MLE1$var[1,1]))
+
+print("The rhohat of polyserial coefficient is:")
+print(MLE2$rho)
+print("The standard error of polyserial coefficient is:")
+print(sqrt(MLE2$var[1,1]))
+```
+
+The outcomes of IRLS provide support points sequence during iterative regression. Draw these points to visualize the convergence process:
+```{r}
+set.seed(1998)
+x1<-X2[1,]
+x2<-X2[2,]
+r0<-cor(x1,x2)
+rho=0.5
+
+# support points
+EX <-result2$Ex
+EY = result2$Ey
+iter = result2$iter
+lm1 <- lm(EY[,iter]~0 + EX[,iter])
+plot(x1,x2,pch=19,xlim=c(-1.5,1.5),ylim=c(-1.5,1.5),xlab=expression(Z[1]),ylab=expression(Z[2]),col='gray')
+points(cbind(EX[1,1:iter],EY[1,1:iter]),pch=3,col='red',type='b',lty=3)
+points(cbind(EX[2,1:iter],EY[2,1:iter]),pch=3,col='blue',type='b',lty=3)
+points(cbind(EX[3,1:iter],EY[3,1:iter]),pch=3,col='purple',type='b',lty=3)
+
+# threshold
+abline(a=0,b=r0,col='red')
+abline(a=0,b=rho,col='green')
+abline(lm1)
+abline(h=0)
+abline(h=1)
+abline(v=-1)
+abline(v=0)
+legend("topleft", inset=0.03, text.width=0.5, x.intersp=0.3, c("pearson correlation","true correlation", "polychoric correlation"),
+               lty=c(1, 1, 1), cex=0.8,col=c("red", "green", 'black'))
+grid()
+```
+
+## Data Analysis
+
+The first two dataset is from package psych:
+
+25 Personality items representing 5 factors
+```{r}
+bfi.com <- bfi[complete.cases(bfi[1:5]),1:5]
+print("Pearson:")
+lowerCor(bfi.com) #the default Pearson
+print("Spearman")
+lowerCor(bfi.com,method="spearman")
+print("Polychoric estimated by 2-step MLE in psych:")
+lowerMat(polychoric(bfi.com)$rho)
+
+L1 = diag(5)
+for (i in 2:5) {
+  for (j in 1:(i-1)) {
+    x = bfi.com[,c(i,j)]
+    X = t(as.matrix(x))
+    L1[i,j] = esti_polychoric(X)$rho
+  }
+}
+print("Polychoric estimated by IRLS:")
+round(L1,2)
+```
+
+16 ability items scored as correct or incorrect
+```{r}
+ab.com <- ability[complete.cases(ability[1:5]),1:5]
+print("Pearson:")
+lowerCor(ab.com) #the default Pearson
+print("Polychoric estimated by 2-step MLE in psych:")
+lowerMat(polychoric(ab.com)$rho)
+
+L2 = diag(5)
+for (i in 2:5) {
+  for (j in 1:(i-1)) {
+    x = na.omit(ab.com[,c(i,j)])
+    X = t(x)
+    L2[i,j] = esti_polychoric(X)$rho
+  }
+}
+print("Polychoric estimated by IRLS:")
+round(L2,2)
+```
+
+The third dataset is IRLS built-in dataset.
+
+Chinese Early Childhood Environment Rating Scale
+```{r}
+cec = na.omit(CECERS[,c(5,7,11,13,17)])
+print("Pearson:")
+lowerCor(cec)
+print("Polychoric estimated by 2-step MLE in psych:")
+lowerMat(polychoric(cec)$rho)
+
+L3 = diag(5)
+for (i in 2:5) {
+  for (j in 1:(i-1)) {
+    x = cec[,c(i,j)]
+    X = t(x)
+    L3[i,j] = esti_polychoric(X)$rho
+  }
+}
+print("Polychoric estimated by IRLS:")
+round(L3,2)
+```
+
