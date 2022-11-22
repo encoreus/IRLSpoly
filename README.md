@@ -10,7 +10,9 @@ IRLS provides an iterative regression algorithm based on conditional
 mathematical expectation, which can calculate the polyserial/polychoric
 correlation coefficient extremely quickly with similar accuracy.
 
-The paper explaining the theory is placed in .
+The paper explaining the theory is placed in [Iteratively Reweighted
+Least Squares Method for Estimating Polyserial and Polychoric
+Correlation Coefficients](https://arxiv.org/abs/2210.11115).
 
 ## Installation
 
@@ -45,8 +47,7 @@ X2[,1:6]
 #>      [,1] [,2] [,3] [,4] [,5] [,6]
 #> [1,]    3    2    1    3    3    3
 #> [2,]    2    2    1    2    3    2
-table(X2[1,],X2[2,])
-#>    
+table(X2[1,],X2[2,])  
 #>      1  2  3
 #>   1 71 15  1
 #>   2 94 54 18
@@ -60,21 +61,17 @@ polyserial/polychoric coefficients:
 result1 = esti_polyserial(X1)
 result2 = esti_polychoric(X2)
 
-print("The rhohat of polyserial coefficient is:")
-#> [1] "The rhohat of polyserial coefficient is:"
+# The rhohat of polyserial coefficient is:
 print(result1$rho)
 #> [1] 0.4854298
-print("The standard error of polyserial coefficient is:")
-#> [1] "The standard error of polyserial coefficient is:"
+# The standard error of polyserial coefficient is:"
 print(result1$std)
 #> [1] 0.0427539
 
-print("The rhohat of polyserial coefficient is:")
-#> [1] "The rhohat of polyserial coefficient is:"
+# The rhohat of polychoric coefficient is:"
 print(result2$rho)
 #> [1] 0.5131697
-print("The standard error of polyserial coefficient is:")
-#> [1] "The standard error of polyserial coefficient is:"
+# The standard error of polychoric coefficient is:"
 print(result2$std)
 #> [1] 0.0343688
 ```
@@ -85,23 +82,17 @@ Compare with the MLE in package: polycor:
 MLE1 = polycor::polyserial(X1[1,],X1[2,],ML=T,std.err=T)
 MLE2 = polycor::polychor(X2[1,],X2[2,],ML=T,std.err=T)
 
-print("The rhohat of polyserial coefficient is:")
-#> [1] "The rhohat of polyserial coefficient is:"
-print(MLE1$rho)
-#>           
+# The rhohat of polyserial coefficient is:"
+print(MLE1$rho)     
 #> 0.4896122
-print("The standard error of polyserial coefficient is:")
-#> [1] "The standard error of polyserial coefficient is:"
+# The standard error of polyserial coefficient is:"
 print(sqrt(MLE1$var[1,1]))
 #> [1] 0.03501101
 
-print("The rhohat of polyserial coefficient is:")
-#> [1] "The rhohat of polyserial coefficient is:"
-print(MLE2$rho)
-#>          
+# The rhohat of polychoric coefficient is:"
+print(MLE2$rho)      
 #> 0.496702
-print("The standard error of polyserial coefficient is:")
-#> [1] "The standard error of polyserial coefficient is:"
+# The standard error of polychoric coefficient is:"
 print(sqrt(MLE2$var[1,1]))
 #> [1] 0.04765226
 ```
@@ -145,21 +136,19 @@ grid()
 
 The first two dataset is from package psych:
 
-25 Personality items representing 5 factors
+**25 Personality items representing 5 factors**
 
 ``` r
 bfi.com <- bfi[complete.cases(bfi[1:5]),1:5]
-print("Pearson:")
-#> [1] "Pearson:"
-lowerCor(bfi.com) #the default Pearson
+# Pearson:
+lowerCor(bfi.com) 
 #>    A1    A2    A3    A4    A5   
 #> A1  1.00                        
 #> A2 -0.34  1.00                  
 #> A3 -0.27  0.49  1.00            
 #> A4 -0.15  0.34  0.36  1.00      
 #> A5 -0.18  0.39  0.51  0.31  1.00
-print("Spearman")
-#> [1] "Spearman"
+# Spearman
 lowerCor(bfi.com,method="spearman")
 #>    A1    A2    A3    A4    A5   
 #> A1  1.00                        
@@ -167,252 +156,8 @@ lowerCor(bfi.com,method="spearman")
 #> A3 -0.30  0.50  1.00            
 #> A4 -0.16  0.34  0.36  1.00      
 #> A5 -0.22  0.40  0.53  0.31  1.00
-print("Polychoric estimated by 2-step MLE in psych:")
-#> [1] "Polychoric estimated by 2-step MLE in psych:"
+# Polychoric estimated by 2-step MLE in psych:
 lowerMat(polychoric(bfi.com)$rho)
-#> [1] 8
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
 #>    A1    A2    A3    A4    A5   
 #> A1  1.00                        
 #> A2 -0.41  1.00                  
@@ -428,8 +173,7 @@ for (i in 2:5) {
     L1[i,j] = esti_polychoric(X)$rho
   }
 }
-print("Polychoric estimated by IRLS:")
-#> [1] "Polychoric estimated by IRLS:"
+# Polychoric estimated by IRLS:
 round(L1,2)
 #>       [,1] [,2] [,3] [,4] [,5]
 #> [1,]  1.00 0.00 0.00 0.00    0
@@ -439,247 +183,20 @@ round(L1,2)
 #> [5,] -0.23 0.45 0.59 0.35    1
 ```
 
-16 ability items scored as correct or incorrect
+**16 ability items scored as correct or incorrect**
 
 ``` r
 ab.com <- ability[complete.cases(ability[1:5]),1:5]
-print("Pearson:")
-#> [1] "Pearson:"
-lowerCor(ab.com) #the default Pearson
+# Pearson:
+lowerCor(ab.com)
 #>           rsn.4 rs.16 rs.17 rs.19 ltt.7
 #> reason.4  1.00                         
 #> reason.16 0.28  1.00                   
 #> reason.17 0.40  0.30  1.00             
 #> reason.19 0.30  0.24  0.33  1.00       
 #> letter.7  0.27  0.26  0.27  0.23  1.00
-print("Polychoric estimated by 2-step MLE in psych:")
-#> [1] "Polychoric estimated by 2-step MLE in psych:"
+# Polychoric estimated by 2-step MLE in psych:
 lowerMat(polychoric(ab.com)$rho)
-#> [1] 8
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
 #>           rsn.4 rs.16 rs.17 rs.19 ltt.7
 #> reason.4  1.00                         
 #> reason.16 0.45  1.00                   
@@ -695,8 +212,7 @@ for (i in 2:5) {
     L2[i,j] = esti_polychoric(X)$rho
   }
 }
-print("Polychoric estimated by IRLS:")
-#> [1] "Polychoric estimated by IRLS:"
+# Polychoric estimated by IRLS:
 round(L2,2)
 #>      [,1] [,2] [,3] [,4] [,5]
 #> [1,] 1.00 0.00 0.00 0.00    0
@@ -708,12 +224,11 @@ round(L2,2)
 
 The third dataset is IRLS built-in dataset.
 
-Chinese Early Childhood Environment Rating Scale
+**Chinese Early Childhood Environment Rating Scale**
 
 ``` r
 cec = na.omit(CECERS[,c(5,7,11,13,17)])
-print("Pearson:")
-#> [1] "Pearson:"
+# Pearson:
 lowerCor(cec)
 #>       A2.2 A3.2 A8.1 A8.3 B11.1
 #> A2.2  1.00                     
@@ -721,278 +236,8 @@ lowerCor(cec)
 #> A8.1  0.48 0.48 1.00           
 #> A8.3  0.45 0.46 0.61 1.00      
 #> B11.1 0.48 0.43 0.57 0.56 1.00
-print("Polychoric estimated by 2-step MLE in psych:")
-#> [1] "Polychoric estimated by 2-step MLE in psych:"
+# Polychoric estimated by 2-step MLE in psych:
 lowerMat(polychoric(cec)$rho)
-#> [1] 8
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 6
-#> [1] 2
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
-#> [1] 4
-#> [1] 3
 #>       A2.2 A3.2 A8.1 A8.3 B11.1
 #> A2.2  1.00                     
 #> A3.2  0.45 1.00                
@@ -1008,8 +253,7 @@ for (i in 2:5) {
     L3[i,j] = esti_polychoric(X)$rho
   }
 }
-print("Polychoric estimated by IRLS:")
-#> [1] "Polychoric estimated by IRLS:"
+# Polychoric estimated by IRLS:
 round(L3,2)
 #>      [,1] [,2] [,3] [,4] [,5]
 #> [1,] 1.00 0.00 0.00 0.00    0

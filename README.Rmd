@@ -18,7 +18,7 @@ The traditional algorithms for estimating the polyserial/polychoric correlation 
 
 IRLS provides an iterative regression algorithm based on conditional mathematical expectation, which can calculate the polyserial/polychoric correlation coefficient extremely quickly with similar accuracy.
 
-The paper explaining the theory is placed in \url{https://arxiv.org/abs/2210.11115}.
+The paper explaining the theory is placed in [Iteratively Reweighted Least Squares Method for Estimating Polyserial and Polychoric Correlation Coefficients](https://arxiv.org/abs/2210.11115).
 
 
 ## Installation
@@ -53,14 +53,14 @@ You can use esti_polyserial and esti_polychoric to estimate polyserial/polychori
 result1 = esti_polyserial(X1)
 result2 = esti_polychoric(X2)
 
-print("The rhohat of polyserial coefficient is:")
+# The rhohat of polyserial coefficient is:
 print(result1$rho)
-print("The standard error of polyserial coefficient is:")
+# The standard error of polyserial coefficient is:"
 print(result1$std)
 
-print("The rhohat of polyserial coefficient is:")
+# The rhohat of polychoric coefficient is:"
 print(result2$rho)
-print("The standard error of polyserial coefficient is:")
+# The standard error of polychoric coefficient is:"
 print(result2$std)
 ```
 
@@ -69,14 +69,14 @@ Compare with the MLE in package: polycor:
 MLE1 = polycor::polyserial(X1[1,],X1[2,],ML=T,std.err=T)
 MLE2 = polycor::polychor(X2[1,],X2[2,],ML=T,std.err=T)
 
-print("The rhohat of polyserial coefficient is:")
+# The rhohat of polyserial coefficient is:"
 print(MLE1$rho)
-print("The standard error of polyserial coefficient is:")
+# The standard error of polyserial coefficient is:"
 print(sqrt(MLE1$var[1,1]))
 
-print("The rhohat of polyserial coefficient is:")
+# The rhohat of polychoric coefficient is:"
 print(MLE2$rho)
-print("The standard error of polyserial coefficient is:")
+# The standard error of polychoric coefficient is:"
 print(sqrt(MLE2$var[1,1]))
 ```
 
@@ -115,14 +115,14 @@ grid()
 
 The first two dataset is from package psych:
 
-25 Personality items representing 5 factors
+**25 Personality items representing 5 factors**
 ```{r}
 bfi.com <- bfi[complete.cases(bfi[1:5]),1:5]
-print("Pearson:")
-lowerCor(bfi.com) #the default Pearson
-print("Spearman")
+# Pearson:
+lowerCor(bfi.com) 
+# Spearman
 lowerCor(bfi.com,method="spearman")
-print("Polychoric estimated by 2-step MLE in psych:")
+# Polychoric estimated by 2-step MLE in psych:
 lowerMat(polychoric(bfi.com)$rho)
 
 L1 = diag(5)
@@ -133,16 +133,16 @@ for (i in 2:5) {
     L1[i,j] = esti_polychoric(X)$rho
   }
 }
-print("Polychoric estimated by IRLS:")
+# Polychoric estimated by IRLS:
 round(L1,2)
 ```
 
-16 ability items scored as correct or incorrect
+**16 ability items scored as correct or incorrect**
 ```{r}
 ab.com <- ability[complete.cases(ability[1:5]),1:5]
-print("Pearson:")
-lowerCor(ab.com) #the default Pearson
-print("Polychoric estimated by 2-step MLE in psych:")
+# Pearson:
+lowerCor(ab.com)
+# Polychoric estimated by 2-step MLE in psych:
 lowerMat(polychoric(ab.com)$rho)
 
 L2 = diag(5)
@@ -153,18 +153,18 @@ for (i in 2:5) {
     L2[i,j] = esti_polychoric(X)$rho
   }
 }
-print("Polychoric estimated by IRLS:")
+# Polychoric estimated by IRLS:
 round(L2,2)
 ```
 
 The third dataset is IRLS built-in dataset.
 
-Chinese Early Childhood Environment Rating Scale
+**Chinese Early Childhood Environment Rating Scale**
 ```{r}
 cec = na.omit(CECERS[,c(5,7,11,13,17)])
-print("Pearson:")
+# Pearson:
 lowerCor(cec)
-print("Polychoric estimated by 2-step MLE in psych:")
+# Polychoric estimated by 2-step MLE in psych:
 lowerMat(polychoric(cec)$rho)
 
 L3 = diag(5)
@@ -175,7 +175,7 @@ for (i in 2:5) {
     L3[i,j] = esti_polychoric(X)$rho
   }
 }
-print("Polychoric estimated by IRLS:")
+# Polychoric estimated by IRLS:
 round(L3,2)
 ```
 
