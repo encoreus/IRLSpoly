@@ -7,8 +7,8 @@ library(polycor)
 library(psych)
 
 ################################################################################
-# Code for Figure 1 
-# The track of the estimating process of the tetrachoric correlation coefficient 
+# Code for Figure 1
+# The track of the estimating process of the tetrachoric correlation coefficient
 set.seed(1997)
 rho<-0.5
 N <- 100
@@ -70,8 +70,8 @@ sim_polyserial= function(N,n,rho,a){
 # N = 30, 50, 100, 500, 1000
 # rho = 0, 0.2, 0.4, 0.6, 0.8
 # s1 = 2, 3, 5, 7
-# Each category has an equal probability to fall in  
-# Change the sample sizes N, true coefficient rho and the number of categories to get different parts in Tabel 1  
+# Each category has an equal probability to fall in
+# Change the sample sizes N, true coefficient rho and the number of categories to get different parts in Tabel 1
 # With N and s1 increasing, the time cost of MLE will be huge.
 set.seed(1998)
 n = 1000
@@ -158,8 +158,8 @@ sim_polychoric= function(N,n,rho,a,b){
 # N = 30, 50, 100, 500, 1000
 # rho = 0, 0.2, 0.4, 0.6, 0.8
 # s1 = 2, 3, 5, 7
-# Each category has an equal probability to fall in.  
-# Change the sample sizes N, true coefficient rho and the number of categories to get different parts in Tabel 2.  
+# Each category has an equal probability to fall in.
+# Change the sample sizes N, true coefficient rho and the number of categories to get different parts in Tabel 2.
 # With N and s1 increasing, the time cost of MLE will be huge.
 # You can change the parameter of function 'polychor' in line 141  to 'F' to accelerate the estimation.
 
@@ -227,17 +227,17 @@ tt2 = 0
 tt3 = 0
 for (i in 1:n) {
   X = gen_polyseries(N,rho,a1)
-  
+
   ptm <- proc.time()
   out1 = try(esti_polyserial(X))
   ptm = proc.time()-ptm
   tt1 = tt1 + ptm
-  
+
   ptm <- proc.time()
   out2 = try(polyserial(X[1,],X[2,],ML=T,std.err=T))
   ptm = proc.time()-ptm
   tt2 = tt2 + ptm
-  
+
   ptm <- proc.time()
   out3 = try(polyserial(X[1,],X[2,],ML=F,std.err=T))
   ptm = proc.time()-ptm
@@ -256,12 +256,12 @@ tt2 = 0
 tt3 = 0
 for (i in 1:n) {
   X = gen_polychoric(N,rho,a1,a1)
-  
+
   ptm <- proc.time()
   out1 = try(esti_polychoric(X))
   ptm = proc.time()-ptm
   tt1 = tt1 + ptm
-  
+
   ptm <- proc.time()
   out2 = try(polychor(X[1,],X[2,],ML=T,std.err=F))
   ptm = proc.time()-ptm
@@ -280,8 +280,8 @@ tt3
 ################################################################################
 # Code for Figure 3
 # SPLOM for part of bif dataset in package psych
-pairs.panels1(bfi[,1:5])
-pairs.panels1(bfi[,1:5], MLE = TRUE)
+pairs_panels1(bfi[,1:5])
+pairs_panels1(bfi[,1:5], MLE = TRUE)
 
 ################################################################################
 # Code for Table 4
@@ -295,7 +295,7 @@ for (i in 2:l1) {
   for (j in 1:(i-1)) {
     df = na.omit(bfi[c(i,j)])
     df = t(as.matrix(df))
-    
+
     ptm1 <- proc.time()
     test3 = try(esti_polychoric(df))
     ptm1 = proc.time()-ptm1
@@ -338,12 +338,12 @@ for (i in 2:l1) {
   for (j in 1:(i-1)) {
     df = na.omit(PN[c(i,j)])
     df = t(as.matrix(df))
-    
+
     ptm1 <- proc.time()
     test3 = try(esti_polychoric(df))
     ptm1 = proc.time()-ptm1
     t1 = t1 + ptm1
-    
+
     ptm2 <- proc.time()
     test3 = try(polychor(df[1,],df[2,],ML=T,std.err = T))
     ptm2 = proc.time()-ptm2
