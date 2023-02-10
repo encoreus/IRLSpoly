@@ -1,5 +1,5 @@
 #' @docType data
-#' @name PN
+#' @name Parenteral_nutrition
 #'
 #' @title Parenteral_nutrition
 #' @description   The Parenteral Nutrition data were collected from 543 patients
