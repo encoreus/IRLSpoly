@@ -2,7 +2,7 @@
 #' @description
 #' Estimate the polyserial correlation coefficient.
 #'
-#' @param X a matrix or dataframe contains two polyserial variable.
+#' @param X a matrix(2*N) or dataframe contains two polyserial variable(Continuous variable first).
 #' @param maxn the maximum iterations times.
 #' @param e the maximum tolerance of convergence.
 #'
@@ -46,6 +46,10 @@ esti_polyserial = function(X,maxn=100,e=1e-8){
   iter =0;dif = 1;n=maxn;ep=e;rho0=rho
   while((iter<n)&(dif>ep)){
     sigma = (1 + rho^2*(ai[1:s]*dnorm(ai[1:s])-ai[2:(s+1)]*dnorm(ai[2:(s+1)]))/P-rho^2*(dnorm(ai[1:s])-dnorm(ai[2:(s+1)]))^2/P^2)/xt
+    if(sum(is.na(sigma)>0)){
+      warning("NA appears during the calculation of covariance matrix, and the result may be unstable.")
+      break
+    }
     #if(is.singular.matrix(diag(sigma))){sigma = runif(length(xt))}
     #rep(1,length(xt))/length(xt)}
     rho = sum(Ex*Ey/sigma)/sum(Ex^2/sigma)
@@ -56,7 +60,9 @@ esti_polyserial = function(X,maxn=100,e=1e-8){
     iter = iter +1
   }
   varrho = 1/sum(Ex^2/sigma)
-
+  if(iter>=maxn){
+    warning('The number of iterations reaches the upper limit. Your dataset may be fragile.')
+  }
   return(list(rho = rho,
               std = sqrt(varrho),
               iter = iter,

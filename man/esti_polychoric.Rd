@@ -7,7 +7,7 @@
 esti_polychoric(X, maxn = 100, e = 1e-08, ct = FALSE)
 }
 \arguments{
-\item{X}{a matrix or dataframe contains two polychoric variable, or a contingency table with both columns and rows names.}
+\item{X}{a matrix(2*N) or dataframe contains two polychoric variable, or a contingency table with both columns and rows names.}
 
 \item{maxn}{the maximum iterations times.}
 

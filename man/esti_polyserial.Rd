@@ -7,7 +7,7 @@
 esti_polyserial(X, maxn = 100, e = 1e-08)
 }
 \arguments{
-\item{X}{a matrix or dataframe contains two polyserial variable.}
+\item{X}{a matrix(2*N) or dataframe contains two polyserial variable(Continuous variable first).}
 
 \item{maxn}{the maximum iterations times.}
 
